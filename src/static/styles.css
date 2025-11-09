@@ -90,18 +90,22 @@ section h3 {
 }
 
 .participants ul {
-  list-style: disc;
-  padding-left: 20px;
+  /* hide default bullets and tighten spacing so we can add a delete control */
+  list-style: none;
+  padding-left: 0;
   margin: 0;
   max-height: 120px;
   overflow-y: auto;
 }
 
 .participants li {
-  padding: 4px 0;
+  padding: 6px 8px;
   font-size: 14px;
   color: #333;
   border-bottom: 1px dashed rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .participants li:last-child {
@@ -112,6 +116,26 @@ section h3 {
   font-style: italic;
   color: #666;
   font-size: 14px;
+}
+
+/* Delete control next to participant */
+.participant-delete {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.participant-delete:hover {
+  background: rgba(198,40,40,0.06);
+  color: #b71c1c;
+}
+.participant-email {
+  word-break: break-word;
+  margin-right: 8px;
+  flex: 1 1 auto;
 }
 
 .form-group {

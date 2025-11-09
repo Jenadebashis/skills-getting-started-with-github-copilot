@@ -74,7 +74,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const ul = document.createElement("ul");
         a.participants.forEach((email) => {
           const li = document.createElement("li");
-          li.textContent = email;
+
+          const span = document.createElement("span");
+          span.className = "participant-email";
+          span.textContent = email;
+
+          const btn = document.createElement("button");
+          btn.className = "participant-delete";
+          btn.type = "button";
+          btn.title = `Unregister ${email}`;
+          // use a compact cross icon; could be replaced with SVG
+          btn.innerHTML = "✖";
+
+          // Click handler for unregistering
+          btn.addEventListener("click", async (evt) => {
+            evt.preventDefault();
+            // Confirm quick action (lightweight)
+            const ok = confirm(`Unregister ${email} from ${name}?`);
+            if (!ok) return;
+
+            try {
+              const url = `/activities/${encodeURIComponent(name)}/participants?email=${encodeURIComponent(email)}`;
+              const res = await fetch(url, { method: "DELETE" });
+              const body = await res.json().catch(() => ({}));
+              if (!res.ok) {
+                showMessage(body.detail || body.message || 'Failed to unregister', 'error');
+                return;
+              }
+              showMessage(body.message || `${email} unregistered`, 'success');
+              // Refresh list
+              await loadAndRender();
+            } catch (err) {
+              console.error(err);
+              showMessage('Network error trying to unregister.', 'error');
+            }
+          });
+
+          li.appendChild(span);
+          li.appendChild(btn);
           ul.appendChild(li);
         });
         participantsWrap.appendChild(ul);
